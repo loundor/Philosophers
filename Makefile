@@ -1,6 +1,7 @@
 NAME		=	philo
 CC			=	gcc
-FLAGS		=	-Wall -Werror -Wextra
+FLAGS		=	-Wall -Werror -Wextra $(EXTRAF)
+EXTRAF		=	-pthread.
 INCLUDES	=	-I./
 SRCS		=	main.c
 

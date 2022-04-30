@@ -6,7 +6,7 @@
 /*   By: stissera <stissera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/29 13:38:14 by stissera          #+#    #+#             */
-/*   Updated: 2022/04/29 14:23:20 by stissera         ###   ########.fr       */
+/*   Updated: 2022/04/30 12:05:01 by stissera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ int	main(int argc, char **argv)
 t_master	*create_philo(t_config *config)
 {
 	t_master 
-	
 
 	return(philo);
 }

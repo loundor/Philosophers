@@ -6,7 +6,7 @@
 /*   By: stissera <stissera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/02 21:31:11 by stissera          #+#    #+#             */
-/*   Updated: 2022/05/02 23:19:11 by stissera         ###   ########.fr       */
+/*   Updated: 2022/05/05 15:10:40 by stissera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,30 +25,36 @@ int	create_philo(t_config *config, t_master *master)
 		if (!philo)
 			return (0);
 		philo->id = i;
-		philo->life = config->time_to_die;
 		philo->eated = 0;
+		philo->state = 0;
+		philo->action = 0;
 		if (pthread_mutex_init(&philo->fork, NULL))
 			return (0);
-		philo->state = 0;
 		if (i > 1)
-		{
-			philo->right = master->last;
-			philo->left = master->first;
-			master->last->left = philo;
-			philof->right = philo;
-		}
+			push_next_philo(philo, philof, master);
 		else
-		{
-			philo->right = philo;
-			philo->left = philo;
-			master->first = philo;
-			philof = philo;
-		}
+			philof = push_first_philo(philo, master);
 		master->last = philo;
-		philo == NULL;
+		philo = NULL;
 		printf("Thread %d created!\n", i);
 	}
 	return (i);
+}
+
+void	push_next_philo(t_philo *philo, t_philo *philof, t_master *master)
+{
+	philo->right = master->last;
+	philo->left = master->first;
+	master->last->left = philo;
+	philof->right = philo;
+}
+
+t_philo	*push_first_philo(t_philo *philo, t_master *master)
+{
+	philo->right = philo;
+	philo->left = philo;
+	master->first = philo;
+	return (philo);
 }
 
 void	free_philo(t_config *config, t_master *master)
@@ -56,7 +62,8 @@ void	free_philo(t_config *config, t_master *master)
 	t_philo	*bak;
 	int		i;
 
-	i = config->number_of_philosophers + 1; // Le premier philo a l id 1... create philo commemce a zero.
+// Le premier philo a l id 1... create philo commemce a zero.
+	i = config->number_of_philosophers + 1;
 	while (--i > 0)
 	{
 		bak = master->last;

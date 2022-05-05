@@ -6,7 +6,7 @@
 /*   By: stissera <stissera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/30 11:54:15 by stissera          #+#    #+#             */
-/*   Updated: 2022/05/02 21:34:55 by stissera         ###   ########.fr       */
+/*   Updated: 2022/05/05 15:10:35 by stissera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,4 +51,23 @@ int	ft_isdigit(char *nbr)
 			return (0);
 	}
 	return (1);
+}
+
+void	monitor(t_master *master)
+{
+	t_philo	*philo;
+	long	time;
+
+	time = (((master->first->start.tv_sec % 10000) * 1000000)
+			+ master->first->start.tv_usec);
+	philo = master->first;
+	while (time - philo->life < master->config->time_to_die)
+	{
+		philo = philo->left;
+		time = (((master->first->start.tv_sec % 10000) * 1000000)
+				+ master->first->start.tv_usec);
+	}
+	printf ("%ld %ld died!!!", ((master->first->start.tv_sec % 10000) * 1000000)
+		+ master->first->start.tv_usec, philo->id);
+	master->dead = DEAD;
 }

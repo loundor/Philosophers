@@ -6,33 +6,31 @@
 /*   By: stissera <stissera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 00:56:12 by stissera          #+#    #+#             */
-/*   Updated: 2022/05/03 00:56:45 by stissera         ###   ########.fr       */
+/*   Updated: 2022/05/05 15:10:40 by stissera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./philo.h"
 
-t_philo	*get_id_mintime(t_master *master)
-{
-	t_philo			*id;
-	unsigned long	time;
-
-	id = master->first;
-	time = (master->first->start.tv_sec % 10 * 1000000)
-		+ master->first->start.tv_usec;
-	master->first = master->first->left;
-	while (master->first->id != id)
+// DEBUG ZONE **************************
+/* 	i = 0;
+	master = first;
+	while (++i <= config->number_of_philosophers)
 	{
-		if (time < ((master->first->start.tv_sec % 10 * 1000000)
-				+ master->first->start.tv_usec)) // And may be state is not eating or thinking..
-		{
-			id = master->first;
-			time = (master->first->start.tv_sec % 10 * 1000000)
-				+ master->first->start.tv_usec;
-		}
+		printf("Life time of %ld start at %ld.%6d\n", master->first->left->life,
+			master->first->left->start.tv_sec,
+			master->first->left->start.tv_usec);
 		master->first = master->first->left;
-	}
-	return (id);
+	} */
+
+long	get_id_time(t_philo *philo)
+{
+	long	time;
+
+	gettimeofday(&philo->start, NULL);
+	time = (((philo->start.tv_sec % 10000) * 1000000)
+			+ philo->start.tv_usec);
+	return (time);
 }
 
 void	gettime(t_master *first, t_config *config)
@@ -45,17 +43,8 @@ void	gettime(t_master *first, t_config *config)
 	while (++i <= config->number_of_philosophers)
 	{
 		gettimeofday(&master->first->start, NULL);
-		master->first = master->first->left;
-	}
-
-// DEBUG ZONE **************************
-	i = 0;
-	master = first;
-	while (++i <= config->number_of_philosophers)
-	{
-		printf("Life time of %ld start at %ld.%6ld\n", master->first->left->id,
-			master->first->left->start.tv_sec,
-			master->first->left->start.tv_usec);
+		master->first->life = (((master->first->start.tv_sec % 10000) * 1000000)
+				+ master->first->start.tv_usec);
 		master->first = master->first->left;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: stissera <stissera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/02 21:33:59 by stissera          #+#    #+#             */
-/*   Updated: 2022/05/02 21:34:42 by stissera         ###   ########.fr       */
+/*   Updated: 2022/05/05 15:10:41 by stissera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	arg_take(t_config *config, int argc, char **argv)
 	config->time_to_eat = ft_atoi(argv[3]);
 	config->time_to_sleep = ft_atoi(argv[4]);
 	if (argv[5] && ft_isdigit(argv[5]))
-		config->number_of_times_each_philosopher_must_eat = ft_atoi(argv[5]);
+		config->nbrt_philo_must_eat = ft_atoi(argv[5]);
 	else
-		config->number_of_times_each_philosopher_must_eat = 0;
+		config->nbrt_philo_must_eat = -1;
 }

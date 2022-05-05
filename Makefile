@@ -7,6 +7,7 @@ SRCS		=	main.c \
 				structure.c \
 				parssing.c \
 				routine.c \
+				state.c \
 				utils.c
 
 OBJS		=	$(addprefix ./, ${SRCS:.c=.o})

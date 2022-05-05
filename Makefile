@@ -1,14 +1,19 @@
 NAME		=	philo
 CC			=	gcc
 FLAGS		=	-Wall -Werror -Wextra $(EXTRAF)
-EXTRAF		=	-pthread.
+EXTRAF		=	-g -pthread
 INCLUDES	=	-I./
-SRCS		=	main.c
+SRCS		=	main.c \
+				structure.c \
+				parssing.c \
+				routine.c \
+				utils.c
 
 OBJS		=	$(addprefix ./, ${SRCS:.c=.o})
 RM			=	@rm -rf
 
-$(NAME)		=	${OBJS}
+$(NAME)		:	${OBJS}
+				${CC} ${FLAGS} ${OBJS} -o $@
 
 all			:	${NAME}
 
@@ -18,7 +23,6 @@ clean		:
 fclean		:	clean
 				${RM} ${NAME}
 
-re			:	fclean
-				all
+re			:	fclean all
 
 .PHONY		:	all clean fclean re

@@ -6,7 +6,7 @@
 /*   By: stissera <stissera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/30 11:54:15 by stissera          #+#    #+#             */
-/*   Updated: 2022/04/30 12:05:00 by stissera         ###   ########.fr       */
+/*   Updated: 2022/05/02 21:34:55 by stissera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ int	ft_atoi(char *nbr)
 
 	neg = 1;
 	ret = 0;
-
 	while (*nbr == ' ')
 		nbr++;
 	if (*nbr == '+' || *nbr == '-')
@@ -31,7 +30,7 @@ int	ft_atoi(char *nbr)
 	while (*nbr && *nbr >= '0' && *nbr <= '9')
 	{
 		ret *= 10;
-		ret += *nbr + 0;
+		ret += *nbr - 48;
 		nbr++;
 	}
 	ret *= neg;

@@ -6,7 +6,7 @@
 /*   By: stissera <stissera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/29 13:28:24 by stissera          #+#    #+#             */
-/*   Updated: 2022/05/05 18:45:09 by stissera         ###   ########.fr       */
+/*   Updated: 2022/05/06 07:12:43 by stissera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,9 @@ void		eating(t_philo *philo, t_config *config);
 void		sleeping(t_philo *philo, t_config *config);
 void		thinking(t_philo *philo, t_config *config);
 void		do_action(t_philo *need_eat);
+
+void		monitor(t_master *master);
+void		print_header(void);
 
 // Check and give orders to philosophers
 #endif

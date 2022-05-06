@@ -6,7 +6,7 @@
 /*   By: stissera <stissera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/30 11:54:15 by stissera          #+#    #+#             */
-/*   Updated: 2022/05/05 18:45:08 by stissera         ###   ########.fr       */
+/*   Updated: 2022/05/06 00:29:56 by stissera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,4 +70,7 @@ void	monitor(t_master *master)
 	printf ("%ld %ld died!!!", ((master->first->start.tv_sec % 10000) * 1000000)
 		+ master->first->start.tv_usec, philo->id);
 	master->dead = DEAD;
+	printf("║%11d║%11s║%20s║\n", ((master->first->start.tv_sec % 10000)
+			* 1000000) + master->first->start.tv_usec, philo->id, "is DEAD!");
+	printf("╠═══════════╬═══════════╬════════════════════╣\n");
 }

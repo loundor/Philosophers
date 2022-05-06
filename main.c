@@ -6,7 +6,7 @@
 /*   By: stissera <stissera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/29 13:38:14 by stissera          #+#    #+#             */
-/*   Updated: 2022/05/05 18:45:15 by stissera         ###   ########.fr       */
+/*   Updated: 2022/05/06 07:12:52 by stissera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ void	routine(t_config *config, t_master *master)
 
 	need_eat = master->first;
 	gettime(master, config);
-	pthread_create(&monitoring, NULL, monitor, master);  /// TO SEE
+	pthread_create(&monitoring, NULL, &monitor, (void *)master);
+	print_header();
 	i = 0;
 	while (!master->dead || master->first->eated == config->nbrt_philo_must_eat)
 	{
@@ -57,4 +58,11 @@ void	routine(t_config *config, t_master *master)
 		master->first = master->first->left;
 	}
 	pthread_detach(monitoring);
+}
+
+void	print_header(void)
+{
+	printf("╔═══════════╦═══════════╦════════════════════╗\n");
+	printf("║   Time    ║   Philo   ║        Event       ║\n");
+	printf("╠═══════════╬═══════════╬════════════════════╣\n");
 }

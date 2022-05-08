@@ -6,7 +6,7 @@
 /*   By: stissera <stissera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/29 13:28:24 by stissera          #+#    #+#             */
-/*   Updated: 2022/05/06 07:12:43 by stissera         ###   ########.fr       */
+/*   Updated: 2022/05/07 18:06:25 by stissera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ typedef struct s_master
 	t_philo		*first;
 	t_philo		*last;
 	t_config	*config;
+	int			eated;
 	int			dead;
 }	t_master;
 
@@ -74,7 +75,7 @@ void		sleeping(t_philo *philo, t_config *config);
 void		thinking(t_philo *philo, t_config *config);
 void		do_action(t_philo *need_eat);
 
-void		monitor(t_master *master);
+void		*monitor(void *master);
 void		print_header(void);
 
 // Check and give orders to philosophers

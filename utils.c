@@ -6,7 +6,7 @@
 /*   By: stissera <stissera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/30 11:54:15 by stissera          #+#    #+#             */
-/*   Updated: 2022/05/06 00:29:56 by stissera         ###   ########.fr       */
+/*   Updated: 2022/05/07 18:28:21 by stissera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,13 @@ int	ft_isdigit(char *nbr)
 	return (1);
 }
 
-void	monitor(t_master *master)
+void	*monitor(void *s)
 {
-	t_philo	*philo;
-	long	time;
+	t_master	*master;
+	t_philo		*philo;
+	long		time;
 
+	master = (t_master *) s;
 	time = (((master->first->start.tv_sec % 10000) * 1000000)
 			+ master->first->start.tv_usec);
 	philo = master->first;
@@ -67,10 +69,12 @@ void	monitor(t_master *master)
 		time = (((master->first->start.tv_sec % 10000) * 1000000)
 				+ master->first->start.tv_usec);
 	}
-	printf ("%ld %ld died!!!", ((master->first->start.tv_sec % 10000) * 1000000)
-		+ master->first->start.tv_usec, philo->id);
+//	printf ("%ld %ld died!!!", ((master->first->start.tv_sec % 10000) * 1000000)
+//		+ master->first->start.tv_usec, philo->id);
 	master->dead = DEAD;
-	printf("║%11d║%11s║%20s║\n", ((master->first->start.tv_sec % 10000)
+	printf("║%11ld ║%11ld ║\033[0;31m%-20s\033[0m║▒\n", ((master->first->start.tv_sec % 10000)
 			* 1000000) + master->first->start.tv_usec, philo->id, "is DEAD!");
-	printf("╠═══════════╬═══════════╬════════════════════╣\n");
+	printf("╚════════════╩════════════╩════════════════════╝▒\n");
+	printf("  ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒\n");
+	return (NULL);
 }

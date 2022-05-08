@@ -6,7 +6,7 @@
 /*   By: stissera <stissera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/29 13:38:14 by stissera          #+#    #+#             */
-/*   Updated: 2022/05/06 07:12:52 by stissera         ###   ########.fr       */
+/*   Updated: 2022/05/07 18:31:56 by stissera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,10 @@ void	routine(t_config *config, t_master *master)
 
 	need_eat = master->first;
 	gettime(master, config);
-	pthread_create(&monitoring, NULL, &monitor, (void *)master);
+	pthread_create(&monitoring, NULL, &monitor, master);
 	print_header();
 	i = 0;
-	while (!master->dead || master->first->eated == config->nbrt_philo_must_eat)
+	while (!master->dead || master->eated == config->nbrt_philo_must_eat)
 	{
 		while (++i <= config->number_of_philosophers)
 		{
@@ -54,15 +54,16 @@ void	routine(t_config *config, t_master *master)
 			master->first = master->first->left;
 			master->last = master->first->right;
 		}
-		do_action(need_eat);
+		// do_action(need_eat);
 		master->first = master->first->left;
+		i = 0;
 	}
-	pthread_detach(monitoring);
+	pthread_join(monitoring, NULL);
 }
 
 void	print_header(void)
 {
-	printf("╔═══════════╦═══════════╦════════════════════╗\n");
-	printf("║   Time    ║   Philo   ║        Event       ║\n");
-	printf("╠═══════════╬═══════════╬════════════════════╣\n");
+	printf("╔════════════╦════════════╦════════════════════╗\n");
+	printf("║   Time     ║   Philo    ║        Event       ║\n");
+	printf("╠════════════╬════════════╬════════════════════╣▒\n");
 }

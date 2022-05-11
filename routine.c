@@ -6,7 +6,7 @@
 /*   By: stissera <stissera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 00:56:12 by stissera          #+#    #+#             */
-/*   Updated: 2022/05/05 18:45:14 by stissera         ###   ########.fr       */
+/*   Updated: 2022/05/11 18:34:28 by stissera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,28 +23,15 @@
 		master->first = master->first->left;
 	} */
 
-long	get_id_time(t_philo *philo)
+// IF ONLY THIS FUNCTION, put it in utils...
+long	gettime(void)
 {
-	long	time;
+	struct timeval	starttime;
+	long			ret;
 
-	gettimeofday(&philo->start, NULL);
-	time = (((philo->start.tv_sec % 10000) * 1000000)
-			+ philo->start.tv_usec);
-	return (time);
-}
-
-void	gettime(t_master *first, t_config *config)
-{
-	int			i;
-	t_master	*master;
-
-	master = first;
-	i = 0;
-	while (++i <= config->number_of_philosophers)
-	{
-		gettimeofday(&master->first->start, NULL);
-		master->first->life = (((master->first->start.tv_sec % 10000) * 1000000)
-				+ master->first->start.tv_usec);
-		master->first = master->first->left;
-	}
+	gettimeofday(&starttime, NULL);
+	ret = ((starttime.tv_sec % 10000) * 1000000)
+		+ starttime.tv_usec;
+//printf("Gettime: %ld", ret);
+	return (ret);
 }

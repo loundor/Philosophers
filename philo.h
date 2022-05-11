@@ -6,7 +6,7 @@
 /*   By: stissera <stissera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/29 13:28:24 by stissera          #+#    #+#             */
-/*   Updated: 2022/05/07 18:06:25 by stissera         ###   ########.fr       */
+/*   Updated: 2022/05/11 18:36:40 by stissera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,31 +34,41 @@ typedef struct s_config
 typedef struct s_philo
 {
 	size_t			id;
+	t_config		*config;
 	int				state;
-	unsigned long	life;
+	long			life;
 	int				eated;
-	struct timeval	start;
+	int				inaction;
 	pthread_mutex_t	fork;
 	struct s_philo	*left;
 	struct s_philo	*right;
-	int				action;
+	pthread_t		action;
+	long			time;
 }	t_philo;
 
 typedef struct s_master
 {
-	t_philo		*first;
-	t_philo		*last;
-	t_config	*config;
-	int			eated;
-	int			dead;
+	t_philo			*first;
+	t_philo			*last;
+	t_config		*config;
+	long			start;
+	int				eated;
+	int				dead;
 }	t_master;
+
+typedef struct s_needeat
+{
+	t_config	*config;
+	t_philo		*philo;
+}	t_needeat;
 
 // Parsse and take the arguments
 void		arg_take(t_config *config, int argc, char **argv);
 
 // Philosophers structure
 int			create_philo(t_config *config, t_master *master);
-void		push_next_philo(t_philo *philo, t_philo *philof, t_master *master);
+void		push_next_philo(t_philo *philo, t_philo *philof,
+				t_master *master);
 t_philo		*push_first_philo(t_philo *philo, t_master *master);
 void		free_philo(t_config *config, t_master *master);
 
@@ -67,16 +77,19 @@ int			ft_atoi(char *nbr);
 int			ft_isdigit(char *nbr);
 
 // Start simulation
-void		routine(t_config *config, t_master *master);
-void		gettime(t_master *first, t_config *config);
-long		get_id_time(t_philo *philo);
-void		eating(t_philo *philo, t_config *config);
-void		sleeping(t_philo *philo, t_config *config);
-void		thinking(t_philo *philo, t_config *config);
+void		routine(t_master *master);
+long		gettime(void);
+
+void		*launch(void *user);
+
+void		*eating(void *need_eat);
+void		*sleeping(void *need_sleep);
+void		*thinking(void *thing);
 void		do_action(t_philo *need_eat);
 
 void		*monitor(void *master);
 void		print_header(void);
+void		print_bottom(void);
 
 // Check and give orders to philosophers
 #endif

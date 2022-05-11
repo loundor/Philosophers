@@ -6,7 +6,7 @@
 /*   By: stissera <stissera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/30 11:54:15 by stissera          #+#    #+#             */
-/*   Updated: 2022/05/07 18:28:21 by stissera         ###   ########.fr       */
+/*   Updated: 2022/05/11 16:51:40 by stissera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,21 +60,15 @@ void	*monitor(void *s)
 	long		time;
 
 	master = (t_master *) s;
-	time = (((master->first->start.tv_sec % 10000) * 1000000)
-			+ master->first->start.tv_usec);
+	time = gettime() - master->first->life;
 	philo = master->first;
-	while (time - philo->life < master->config->time_to_die)
+	while (time < master->config->time_to_die)
 	{
 		philo = philo->left;
-		time = (((master->first->start.tv_sec % 10000) * 1000000)
-				+ master->first->start.tv_usec);
+		time = gettime() - master->first->life;
 	}
-//	printf ("%ld %ld died!!!", ((master->first->start.tv_sec % 10000) * 1000000)
-//		+ master->first->start.tv_usec, philo->id);
 	master->dead = DEAD;
-	printf("║%11ld ║%11ld ║\033[0;31m%-20s\033[0m║▒\n", ((master->first->start.tv_sec % 10000)
-			* 1000000) + master->first->start.tv_usec, philo->id, "is DEAD!");
-	printf("╚════════════╩════════════╩════════════════════╝▒\n");
-	printf("  ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒\n");
+	printf("║%11ld ║%11ld ║\033[0;31m%-20s\033[0m║▒\n",
+		time, philo->id, " is DEAD!");
 	return (NULL);
 }

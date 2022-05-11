@@ -6,13 +6,39 @@
 /*   By: stissera <stissera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/02 21:31:11 by stissera          #+#    #+#             */
-/*   Updated: 2022/05/05 18:44:23 by stissera         ###   ########.fr       */
+/*   Updated: 2022/05/11 18:36:30 by stissera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./philo.h"
 
-int	create_philo(t_config *config, t_master *master)
+int	/* long	get_id_time(t_philo *philo)
+{
+	long	time;
+
+	gettimeofday(&philo->start, NULL);
+	time = (((philo->start.tv_sec % 10000) * 1000000)
+			+ philo->start.tv_usec);
+	return (time);
+} */
+
+/* long	gettime(t_master *first, t_config *config)
+{
+	int			i;
+	t_master	*master;
+	long		time;
+
+	master = first;
+	i = 0;
+	while (++i <= config->number_of_philosophers)
+	{
+		gettimeofday(&master->first->start, NULL);
+		master->first->life = (((master->first->start.tv_sec % 10000) * 1000000)
+				+ master->first->start.tv_usec);
+		master->first = master->first->left;
+	}
+	return (time);
+} */create_philo(t_config *config, t_master *master)
 {
 	t_philo	*philo;
 	t_philo	*philof;
@@ -27,7 +53,9 @@ int	create_philo(t_config *config, t_master *master)
 		philo->id = i;
 		philo->eated = 0;
 		philo->state = 0;
-		philo->action = 0;
+		philo->time = gettime();
+		philo->config = config;
+		philo->life = gettime();
 		if (pthread_mutex_init(&philo->fork, NULL))
 			return (0);
 		if (i > 1)
@@ -35,8 +63,7 @@ int	create_philo(t_config *config, t_master *master)
 		else
 			philof = push_first_philo(philo, master);
 		master->last = philo;
-		philo = NULL;
-		printf("Thread %d created!\n", i);
+		philo = NULL; // Maybe can remove...
 	}
 	return (i);
 }
@@ -62,7 +89,6 @@ void	free_philo(t_config *config, t_master *master)
 	t_philo	*bak;
 	int		i;
 
-// Le premier philo a l id 1... create philo commemce a zero.
 	i = config->number_of_philosophers + 1;
 	while (--i > 0)
 	{
@@ -71,7 +97,6 @@ void	free_philo(t_config *config, t_master *master)
 		if (i != 0)
 			master->last = master->last->right;
 		free(bak);
-		printf("Thread %d free\n", i);
 	}
 	master->first = NULL;
 	master->last = NULL;

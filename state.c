@@ -6,44 +6,54 @@
 /*   By: stissera <stissera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/05 14:36:32 by stissera          #+#    #+#             */
-/*   Updated: 2022/05/07 18:25:43 by stissera         ###   ########.fr       */
+/*   Updated: 2022/05/11 18:37:24 by stissera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./philo.h"
 
-void	eating(t_philo *philo, t_config *config)
+void	*eating(void *need_eat)
 {
-	philo->state = EATING;
+	t_philo	*philo;
+
+	philo = (t_philo *)need_eat;
+	pthread_mutex_lock(&philo->fork);
 	pthread_mutex_lock(&philo->left->fork);
-	pthread_mutex_lock(&philo->right->fork);
-	printf("║%11ld║%11ld║%-20s║▒\n", ((philo->start.tv_sec % 10000)
-			* 1000000) + philo->start.tv_usec, philo->id, " has taken a fork.");
-	printf("║%11ld║%11ld║%-20s║▒\n", ((philo->start.tv_sec % 10000)
-			* 1000000) + philo->start.tv_usec, philo->id, " is eating.");
-	//printf("%ld %d has taken a fork.\n", get_id_time(philo));
-	//printf("%ld %d is eating.\n", get_id_time(philo));
-	usleep(config->time_to_eat);
-	gettimeofday(&philo->start, NULL);
-	philo->life = (((philo->start.tv_sec % 10000) * 1000000)
-			+ philo->start.tv_usec);
+	philo->state = EATING;
+	printf("║%11ld ║%11ld ║%-20s║▒%d\n", gettime() - philo->time, philo->id,
+		" has taken a fork.", philo->eated);
+	printf("║%11ld ║%11ld ║%-20s║▒\n", gettime() - philo->time, philo->id,
+		" is eating.");
+	usleep(philo->config->time_to_eat);
+	philo->life = gettime();
+	philo->eated++;
+	//gettimeofday(&philo->start, NULL);
+	pthread_mutex_unlock(&philo->fork);
 	pthread_mutex_unlock(&philo->left->fork);
-	pthread_mutex_unlock(&philo->right->fork);
-}
-
-void	sleeping(t_philo *philo, t_config *config)
-{
+	philo->inaction = 0;
 	philo->state = SLEEPING;
-	printf("║%11ld║%11ld║%-20s║▒\n", ((philo->start.tv_sec % 10000)
-			* 1000000) + philo->start.tv_usec, philo->id, " is slepping.");
-	//printf("%ld %d is slepping.\n", get_id_time(philo));
-	usleep(config->time_to_eat);
 }
 
-void	thinking(t_philo *philo, t_config *config)
+void	*sleeping(void *need_sleep)
 {
+	t_philo	*philo;
+
+	philo = (t_philo *)need_sleep;
+	philo->state = SLEEPING;
+	pthread_join(philo->action, NULL);
+	printf("║%11ld ║%11ld ║%-20s║▒\n", gettime() - philo->time,
+		philo->id, " is slepping.");
+	usleep(philo->config->time_to_sleep);
+}
+
+void	*thinking(void *thing)
+{
+	t_philo	*philo;
+
+	philo = (t_philo *)thing;
+	//pthread_join(philo->action, NULL);
 	philo->state = THINKING;
-	printf("║%11ld║%11ld║%-20s║▒\n", ((philo->start.tv_sec % 10000)
-			* 1000000) + philo->start.tv_usec, philo->id, " is thinking.");
-	//printf("%ld %d is thinking.\n", get_id_time(philo));
+	printf("║%11ld ║%11ld ║%-20s║▒\n", gettime() - philo->time, philo->id,
+		" is thinking.");
+	philo->inaction = 0;
 }

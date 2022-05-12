@@ -6,7 +6,7 @@
 /*   By: stissera <stissera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/29 13:28:24 by stissera          #+#    #+#             */
-/*   Updated: 2022/05/11 18:36:40 by stissera         ###   ########.fr       */
+/*   Updated: 2022/05/11 21:14:33 by stissera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ typedef struct s_master
 	t_philo			*last;
 	t_config		*config;
 	long			start;
-	int				eated;
 	int				dead;
 }	t_master;
 
@@ -63,33 +62,29 @@ typedef struct s_needeat
 }	t_needeat;
 
 // Parsse and take the arguments
-void		arg_take(t_config *config, int argc, char **argv);
+void		arg_take(t_config *config, int argc, char **argv);//
 
 // Philosophers structure
-int			create_philo(t_config *config, t_master *master);
-void		push_next_philo(t_philo *philo, t_philo *philof,
-				t_master *master);
-t_philo		*push_first_philo(t_philo *philo, t_master *master);
-void		free_philo(t_config *config, t_master *master);
+int			create_philo(t_config *config, t_master *master);//
+void		push_next_philo(t_philo *philo, t_philo *philof, t_master *master);
+t_philo		*push_first_philo(t_philo *philo, t_master *master);//
+void		free_philo(t_config *config, t_master *master);//
 
 // Utils
-int			ft_atoi(char *nbr);
-int			ft_isdigit(char *nbr);
+int			ft_atoi(char *nbr);//
+int			ft_isdigit(char *nbr);//
 
 // Start simulation
-void		routine(t_master *master);
-long		gettime(void);
+void		routine(t_master *master);//
+long		gettime(void);//
 
-void		*launch(void *user);
+void		*launch(void *user);//
+void		*eating(void *need_eat);//
+void		*sleeping(void *need_sleep);//
+void		*thinking(void *thing);//
 
-void		*eating(void *need_eat);
-void		*sleeping(void *need_sleep);
-void		*thinking(void *thing);
-void		do_action(t_philo *need_eat);
+void		*monitor(void *master);//
+void		print_header(void);//
+void		print_bottom(void);//
 
-void		*monitor(void *master);
-void		print_header(void);
-void		print_bottom(void);
-
-// Check and give orders to philosophers
 #endif

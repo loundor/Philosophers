@@ -6,7 +6,7 @@
 /*   By: stissera <stissera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/05 14:36:32 by stissera          #+#    #+#             */
-/*   Updated: 2022/05/11 18:37:24 by stissera         ###   ########.fr       */
+/*   Updated: 2022/05/11 20:34:12 by stissera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,12 @@ void	*eating(void *need_eat)
 	pthread_mutex_lock(&philo->left->fork);
 	philo->state = EATING;
 	printf("║%11ld ║%11ld ║%-20s║▒%d\n", gettime() - philo->time, philo->id,
-		" has taken a fork.", philo->eated);
+		" has taken a fork.", philo->eated + 1);
 	printf("║%11ld ║%11ld ║%-20s║▒\n", gettime() - philo->time, philo->id,
 		" is eating.");
 	usleep(philo->config->time_to_eat);
 	philo->life = gettime();
 	philo->eated++;
-	//gettimeofday(&philo->start, NULL);
 	pthread_mutex_unlock(&philo->fork);
 	pthread_mutex_unlock(&philo->left->fork);
 	philo->inaction = 0;
@@ -51,7 +50,6 @@ void	*thinking(void *thing)
 	t_philo	*philo;
 
 	philo = (t_philo *)thing;
-	//pthread_join(philo->action, NULL);
 	philo->state = THINKING;
 	printf("║%11ld ║%11ld ║%-20s║▒\n", gettime() - philo->time, philo->id,
 		" is thinking.");

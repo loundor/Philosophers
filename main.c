@@ -6,7 +6,7 @@
 /*   By: stissera <stissera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/29 13:38:14 by stissera          #+#    #+#             */
-/*   Updated: 2022/05/11 18:43:12 by stissera         ###   ########.fr       */
+/*   Updated: 2022/05/11 20:59:07 by stissera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	main(int argc, char **argv)
 		return (0);
 	}
 	master.config = &config;
-	master.dead = 0;
+	//master.dead = 0;
 	routine(&master);
 	free_philo(&config, &master);
 	return (0);
@@ -36,18 +36,24 @@ void	routine(t_master *master)
 {
 	t_philo		*need_eat;
 	pthread_t	monitoring;
+	pthread_t	all_eated;
 	size_t		i;
 
 	master->start = gettime();
 	pthread_create(&monitoring, NULL, &monitor, master);
 	print_header();
- 	i=0;
+	i = 0;
 	while (++i <= master->config->number_of_philosophers)
 	{
 		pthread_create(&master->first->action, NULL, &launch, master->first);
 		master->first = master->first->right;
 	}
-	pthread_join(monitoring, NULL);
+	i = 0;
+	while (++i <= master->config->number_of_philosophers)
+	{
+		pthread_join(master->first->action, NULL);
+		master->first = master->first->right;
+	}
 	print_bottom();
 }
 
@@ -56,8 +62,7 @@ void	*launch(void *user)
 	t_philo		*philo;
 
 	philo = (t_philo *)user;
-	usleep(100);
-	while (philo->eated <= philo->config->nbrt_philo_must_eat
+	while (philo->eated <= philo->config->nbrt_philo_must_eat - 1
 		|| philo->config->nbrt_philo_must_eat == -1 && philo->state != DEAD)
 	{
 		if (philo->state == THINKING && philo->inaction == 0)
@@ -73,7 +78,7 @@ void	*launch(void *user)
 			pthread_create(&philo->action, NULL, &thinking, philo);
 		}
 	}
-	printf("║           Philosopher %ld as finish!           ║▒\n", philo->id);
+	printf("║\033[0;33m           Philosopher %ld as finish!           \033[0m║▒\n", philo->id);
 }
 
 void	print_header(void)

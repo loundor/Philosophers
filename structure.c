@@ -6,39 +6,29 @@
 /*   By: stissera <stissera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/02 21:31:11 by stissera          #+#    #+#             */
-/*   Updated: 2022/05/11 18:36:30 by stissera         ###   ########.fr       */
+/*   Updated: 2022/05/11 20:47:50 by stissera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./philo.h"
 
-int	/* long	get_id_time(t_philo *philo)
+void	push_next_philo(t_philo *philo, t_philo *philof, t_master *master)
 {
-	long	time;
+	philo->right = master->last;
+	philo->left = master->first;
+	master->last->left = philo;
+	philof->right = philo;
+}
 
-	gettimeofday(&philo->start, NULL);
-	time = (((philo->start.tv_sec % 10000) * 1000000)
-			+ philo->start.tv_usec);
-	return (time);
-} */
-
-/* long	gettime(t_master *first, t_config *config)
+t_philo	*push_first_philo(t_philo *philo, t_master *master)
 {
-	int			i;
-	t_master	*master;
-	long		time;
+	philo->right = philo;
+	philo->left = philo;
+	master->first = philo;
+	return (philo);
+}
 
-	master = first;
-	i = 0;
-	while (++i <= config->number_of_philosophers)
-	{
-		gettimeofday(&master->first->start, NULL);
-		master->first->life = (((master->first->start.tv_sec % 10000) * 1000000)
-				+ master->first->start.tv_usec);
-		master->first = master->first->left;
-	}
-	return (time);
-} */create_philo(t_config *config, t_master *master)
+int	create_philo(t_config *config, t_master *master)
 {
 	t_philo	*philo;
 	t_philo	*philof;
@@ -66,22 +56,6 @@ int	/* long	get_id_time(t_philo *philo)
 		philo = NULL; // Maybe can remove...
 	}
 	return (i);
-}
-
-void	push_next_philo(t_philo *philo, t_philo *philof, t_master *master)
-{
-	philo->right = master->last;
-	philo->left = master->first;
-	master->last->left = philo;
-	philof->right = philo;
-}
-
-t_philo	*push_first_philo(t_philo *philo, t_master *master)
-{
-	philo->right = philo;
-	philo->left = philo;
-	master->first = philo;
-	return (philo);
 }
 
 void	free_philo(t_config *config, t_master *master)

@@ -3,12 +3,12 @@ CC			=	gcc
 FLAGS		=	-Wall -Werror -Wextra $(EXTRAF)
 EXTRAF		=	-g -pthread
 INCLUDES	=	-I./
-SRCS		=	main.c \
-				structure.c \
+SRCS		=	structure.c \
 				parssing.c \
 				routine.c \
 				state.c \
-				utils.c
+				utils.c \
+				main.c
 
 OBJS		=	$(addprefix ./, ${SRCS:.c=.o})
 RM			=	@rm -rf

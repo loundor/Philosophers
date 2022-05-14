@@ -6,7 +6,7 @@
 /*   By: stissera <stissera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/29 13:28:24 by stissera          #+#    #+#             */
-/*   Updated: 2022/05/11 21:14:33 by stissera         ###   ########.fr       */
+/*   Updated: 2022/05/14 15:42:37 by stissera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ typedef struct s_master
 	t_philo			*first;
 	t_philo			*last;
 	t_config		*config;
+	int				finish;
 	long			start;
 	int				dead;
 }	t_master;

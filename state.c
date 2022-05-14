@@ -6,7 +6,7 @@
 /*   By: stissera <stissera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/05 14:36:32 by stissera          #+#    #+#             */
-/*   Updated: 2022/05/11 20:34:12 by stissera         ###   ########.fr       */
+/*   Updated: 2022/05/14 16:21:09 by stissera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,18 @@ void	*eating(void *need_eat)
 	pthread_mutex_lock(&philo->left->fork);
 	philo->state = EATING;
 	printf("║%11ld ║%11ld ║%-20s║▒%d\n", gettime() - philo->time, philo->id,
-		" has taken a fork.", philo->eated + 1);
+		" 🥢", philo->eated + 1);
 	printf("║%11ld ║%11ld ║%-20s║▒\n", gettime() - philo->time, philo->id,
-		" is eating.");
+		" 🥣");
 	usleep(philo->config->time_to_eat);
 	philo->life = gettime();
 	philo->eated++;
+	if (philo->state != DEAD)
+		philo->state = SLEEPING;
+	philo->inaction = 0;
 	pthread_mutex_unlock(&philo->fork);
 	pthread_mutex_unlock(&philo->left->fork);
-	philo->inaction = 0;
-	philo->state = SLEEPING;
+	return (NULL);
 }
 
 void	*sleeping(void *need_sleep)
@@ -38,11 +40,14 @@ void	*sleeping(void *need_sleep)
 	t_philo	*philo;
 
 	philo = (t_philo *)need_sleep;
+	if (philo->state == DEAD)
+		return (NULL);
 	philo->state = SLEEPING;
 	pthread_join(philo->action, NULL);
 	printf("║%11ld ║%11ld ║%-20s║▒\n", gettime() - philo->time,
-		philo->id, " is slepping.");
+		philo->id, " 😴");
 	usleep(philo->config->time_to_sleep);
+	return (NULL);
 }
 
 void	*thinking(void *thing)
@@ -50,8 +55,11 @@ void	*thinking(void *thing)
 	t_philo	*philo;
 
 	philo = (t_philo *)thing;
+	if (philo->state == DEAD)
+		return (NULL);
 	philo->state = THINKING;
 	printf("║%11ld ║%11ld ║%-20s║▒\n", gettime() - philo->time, philo->id,
-		" is thinking.");
+		" 🤔");
 	philo->inaction = 0;
+	return (NULL);
 }

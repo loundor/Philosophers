@@ -6,7 +6,7 @@
 /*   By: stissera <stissera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/29 13:38:14 by stissera          #+#    #+#             */
-/*   Updated: 2022/05/11 20:59:07 by stissera         ###   ########.fr       */
+/*   Updated: 2022/05/14 16:25:19 by stissera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	main(int argc, char **argv)
 		return (0);
 	}
 	master.config = &config;
-	//master.dead = 0;
+	master.finish = 0;
 	routine(&master);
 	free_philo(&config, &master);
 	return (0);
@@ -38,6 +38,7 @@ void	routine(t_master *master)
 	pthread_t	monitoring;
 	pthread_t	all_eated;
 	size_t		i;
+	t_config	*config;
 
 	master->start = gettime();
 	pthread_create(&monitoring, NULL, &monitor, master);
@@ -54,6 +55,8 @@ void	routine(t_master *master)
 		pthread_join(master->first->action, NULL);
 		master->first = master->first->right;
 	}
+	master->finish = 1;
+	pthread_join(monitoring, NULL);
 	print_bottom();
 }
 
@@ -62,15 +65,17 @@ void	*launch(void *user)
 	t_philo		*philo;
 
 	philo = (t_philo *)user;
-	while (philo->eated <= philo->config->nbrt_philo_must_eat - 1
+	while (philo->eated < philo->config->nbrt_philo_must_eat
 		|| philo->config->nbrt_philo_must_eat == -1 && philo->state != DEAD)
 	{
-		if (philo->state == THINKING && philo->inaction == 0)
+		if (philo->state == THINKING && philo->inaction == 0 && philo->state != DEAD && philo->left->inaction == 0)
 		{
 			philo->inaction = 1;
 			pthread_create(&philo->action, NULL, &eating, philo);
 		}
-		else if (philo->state == SLEEPING && philo->inaction == 0)
+		else if (philo->state == SLEEPING && philo->inaction == 0
+			&& philo->eated < philo->config->nbrt_philo_must_eat
+			|| philo->config->nbrt_philo_must_eat == -1)
 		{
 			philo->inaction = 1;
 			pthread_create(&philo->action, NULL, &sleeping, philo);
@@ -78,18 +83,21 @@ void	*launch(void *user)
 			pthread_create(&philo->action, NULL, &thinking, philo);
 		}
 	}
-	printf("║\033[0;33m           Philosopher %ld as finish!           \033[0m║▒\n", philo->id);
+	printf("║\033[0;33m");
+	printf("            Philosopher %ld as 👌             ", philo->id);
+	printf("\033[0m║▒\n");
+	return (NULL);
 }
 
 void	print_header(void)
 {
-	printf("╔════════════╦════════════╦════════════════════╗\n");
-	printf("║   Time     ║   Philo    ║        Event       ║\n");
-	printf("╠════════════╬════════════╬════════════════════╣▒\n");
+	printf("╔════════════╦════════════╦══════════════════╗\n");
+	printf("║   Time     ║   Philo    ║      Event       ║\n");
+	printf("╠════════════╬════════════╬══════════════════╣▒\n");
 }
 
 void	print_bottom(void)
 {
-	printf("╚════════════╩════════════╩════════════════════╝▒\n");
-	printf("  ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒\n");
+	printf("╚════════════╩════════════╩══════════════════╝▒\n");
+	printf("  ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒\n");
 }

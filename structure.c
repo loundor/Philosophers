@@ -6,7 +6,7 @@
 /*   By: stissera <stissera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/02 21:31:11 by stissera          #+#    #+#             */
-/*   Updated: 2022/05/11 20:47:50 by stissera         ###   ########.fr       */
+/*   Updated: 2022/05/14 14:52:56 by stissera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	create_philo(t_config *config, t_master *master)
 			return (0);
 		philo->id = i;
 		philo->eated = 0;
-		philo->state = 0;
+		philo->state = THINKING;
 		philo->time = gettime();
 		philo->config = config;
 		philo->life = gettime();
@@ -53,7 +53,7 @@ int	create_philo(t_config *config, t_master *master)
 		else
 			philof = push_first_philo(philo, master);
 		master->last = philo;
-		philo = NULL; // Maybe can remove...
+		philo = 0; // Maybe can remove...
 	}
 	return (i);
 }
@@ -63,14 +63,15 @@ void	free_philo(t_config *config, t_master *master)
 	t_philo	*bak;
 	int		i;
 
-	i = config->number_of_philosophers + 1;
-	while (--i > 0)
+	i = config->number_of_philosophers;
+	while (i > 0)
 	{
 		bak = master->last;
 		pthread_mutex_destroy(&master->last->fork);
 		if (i != 0)
 			master->last = master->last->right;
 		free(bak);
+		i--;
 	}
 	master->first = NULL;
 	master->last = NULL;

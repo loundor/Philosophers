@@ -6,7 +6,7 @@
 /*   By: stissera <stissera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/02 21:31:11 by stissera          #+#    #+#             */
-/*   Updated: 2022/05/14 14:52:56 by stissera         ###   ########.fr       */
+/*   Updated: 2022/05/14 19:16:05 by stissera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	create_philo(t_config *config, t_master *master)
 			return (0);
 		philo->id = i;
 		philo->eated = 0;
-		philo->state = THINKING;
+		philo->state = &master->dead;
 		philo->time = gettime();
 		philo->config = config;
 		philo->life = gettime();

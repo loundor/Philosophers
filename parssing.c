@@ -6,7 +6,7 @@
 /*   By: stissera <stissera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/02 21:33:59 by stissera          #+#    #+#             */
-/*   Updated: 2022/05/14 14:04:25 by stissera         ###   ########.fr       */
+/*   Updated: 2022/05/14 18:57:51 by stissera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,11 @@ void	arg_take(t_config *config, int argc, char **argv)
 		exit(0);
 	}
 	config->number_of_philosophers = ft_atoi(argv[1]);
-	config->time_to_die = ft_atoi(argv[2]);
-	config->time_to_eat = ft_atoi(argv[3]);
-	config->time_to_sleep = ft_atoi(argv[4]);
+	config->time_to_die = ft_atoi(argv[2]) * 10;
+	config->time_to_eat = ft_atoi(argv[3]) * 1000;
+	config->time_to_sleep = ft_atoi(argv[4]) * 10;
 	if (argv[5] && ft_isdigit(argv[5]))
-		config->nbrt_philo_must_eat = ft_atoi(argv[5]);
+		config->nbr_philo_must_eat = ft_atoi(argv[5]);
 	else
-		config->nbrt_philo_must_eat = -1;
+		config->nbr_philo_must_eat = -1;
 }

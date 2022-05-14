@@ -6,7 +6,7 @@
 /*   By: stissera <stissera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/30 11:54:15 by stissera          #+#    #+#             */
-/*   Updated: 2022/05/14 16:09:02 by stissera         ###   ########.fr       */
+/*   Updated: 2022/05/14 19:16:52 by stissera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,16 +61,17 @@ void	*monitor(void *s)
 
 	master = (t_master *) s;
 	philo = master->first;
-	while (master->finish == 0)
+	time = gettime() - master->first->life;
+	while (time < master->config->time_to_die
+		&& master->dead != DEAD)
 	{
-		time = gettime() - master->first->life;
-		if (time > master->config->time_to_die && master->first->state != DEAD)
-		{
-			master->first->state = DEAD;
-			printf("║%11ld ║%11ld ║\033[0;31m%-18s\033[0m║▒\n",
-				time, philo->id, " is DEAD!");
-		}
+		if (master->config->number_of_philosophers == master->finish)
+			return (NULL);
 		philo = philo->left;
+		time = gettime() - master->first->life;
 	}
+	*philo->state = DEAD;
+	printf("║%11ld ║%11ld ║\033[0;31m%-18s\033[0m║▒\n",
+		gettime() - philo->time, philo->id, " is DEAD!");
 	return (NULL);
 }

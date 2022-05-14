@@ -6,7 +6,7 @@
 /*   By: stissera <stissera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/29 13:28:24 by stissera          #+#    #+#             */
-/*   Updated: 2022/05/14 15:42:37 by stissera         ###   ########.fr       */
+/*   Updated: 2022/05/14 18:58:05 by stissera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@
 # include <stdlib.h>
 # include <pthread.h>
 # include <sys/time.h>
-# define THINKING 0
-# define EATING 1
-# define SLEEPING 2
+# define THINK 0
+# define EAT 1
+# define SLEEP 2
 # define DEAD 3
 
 typedef struct s_config
@@ -28,17 +28,17 @@ typedef struct s_config
 	long			time_to_die;
 	long			time_to_eat;
 	long			time_to_sleep;
-	long			nbrt_philo_must_eat;
+	long			nbr_philo_must_eat;
 }	t_config;
 
 typedef struct s_philo
 {
 	size_t			id;
 	t_config		*config;
-	int				state;
+	int				*state;
+	int				status;
 	long			life;
 	int				eated;
-	int				inaction;
 	pthread_mutex_t	fork;
 	struct s_philo	*left;
 	struct s_philo	*right;
@@ -51,8 +51,8 @@ typedef struct s_master
 	t_philo			*first;
 	t_philo			*last;
 	t_config		*config;
-	int				finish;
 	long			start;
+	int				finish;
 	int				dead;
 }	t_master;
 
@@ -80,9 +80,9 @@ void		routine(t_master *master);//
 long		gettime(void);//
 
 void		*launch(void *user);//
-void		*eating(void *need_eat);//
-void		*sleeping(void *need_sleep);//
-void		*thinking(void *thing);//
+void		eating(t_philo *philo);//
+void		sleeping(t_philo *philo);//
+void		thinking(t_philo *philo);//
 
 void		*monitor(void *master);//
 void		print_header(void);//

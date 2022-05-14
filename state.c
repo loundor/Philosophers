@@ -6,7 +6,7 @@
 /*   By: stissera <stissera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/05 14:36:32 by stissera          #+#    #+#             */
-/*   Updated: 2022/05/14 19:15:56 by stissera         ###   ########.fr       */
+/*   Updated: 2022/05/14 20:04:42 by stissera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ void	eating(t_philo *philo)
 	if (*philo->state != DEAD)
 	{
 		philo->life = gettime();
-		printf("║%11ld ║%11ld ║%-20s║▒%d\n", gettime() - philo->time, philo->id,
-			" 🥢", philo->eated + 1);
-		printf("║%11ld ║%11ld ║%-20s║▒\n", gettime() - philo->time, philo->id,
-			" 🥣");
+		printf("║%11ld ║%11ld ║ %-19s║▒%d\n", gettime() - philo->time, philo->id,
+			"🥢", philo->eated + 1);
+		printf("║%11ld ║%11ld ║  %-18s║▒\n", gettime() - philo->time, philo->id,
+			"🥣");
 		usleep(philo->config->time_to_eat);
 		philo->eated++;
 	}
@@ -36,8 +36,8 @@ void	sleeping(t_philo *philo)
 	if (*philo->state == DEAD
 		|| philo->eated == philo->config->nbr_philo_must_eat)
 		return ;
-	printf("║%11ld ║%11ld ║%-20s║▒\n", gettime() - philo->time,
-		philo->id, " 😴");
+	printf("║%11ld ║%11ld ║    %-16s║▒\n", gettime() - philo->time,
+		philo->id, "😴");
 	usleep(philo->config->time_to_sleep);
 	philo->status = THINK;
 }
@@ -47,6 +47,6 @@ void	thinking(t_philo *philo)
 	if (*philo->state == DEAD
 		|| philo->eated == philo->config->nbr_philo_must_eat)
 		return ;
-	printf("║%11ld ║%11ld ║%-20s║▒\n", gettime() - philo->time, philo->id,
-		" 🤔");
+	printf("║%11ld ║%11ld ║      %-14s║▒\n", gettime() - philo->time, philo->id,
+		"🤔");
 }

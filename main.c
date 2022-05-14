@@ -6,7 +6,7 @@
 /*   By: stissera <stissera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/29 13:38:14 by stissera          #+#    #+#             */
-/*   Updated: 2022/05/14 19:15:32 by stissera         ###   ########.fr       */
+/*   Updated: 2022/05/14 20:00:37 by stissera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,11 @@ void	*launch(void *user)
 
 	philo = (t_philo *)user;
 	philo->status = THINK;
-	while (philo->eated < philo->config->nbr_philo_must_eat
-		|| philo->config->nbr_philo_must_eat == -1 && *philo->state != DEAD)
+	while ((philo->eated < philo->config->nbr_philo_must_eat
+			|| philo->config->nbr_philo_must_eat == -1)
+		&& *philo->state != DEAD)
 	{
-		if (philo->right->status != EAT)
+		if (philo->left->status != EAT)
 		{
 			philo->status = EAT;
 			eating(philo);
@@ -80,9 +81,7 @@ void	*launch(void *user)
 	}
 	if (*philo->state == DEAD)
 		return (NULL);
-	printf("║\033[0;33m");
-	printf("            Philosopher %ld as 👌             ", philo->id);
-	printf("\033[0m║▒\n");
+	printf("║Philosopher ║       %4ld ║         👌       ║▒\n", philo->id);
 	return (NULL);
 }
 

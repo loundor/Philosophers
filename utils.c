@@ -6,7 +6,7 @@
 /*   By: stissera <stissera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/30 11:54:15 by stissera          #+#    #+#             */
-/*   Updated: 2022/05/14 19:16:52 by stissera         ###   ########.fr       */
+/*   Updated: 2022/05/14 20:02:31 by stissera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,10 +68,10 @@ void	*monitor(void *s)
 		if (master->config->number_of_philosophers == master->finish)
 			return (NULL);
 		philo = philo->left;
-		time = gettime() - master->first->life;
+		time = gettime() - philo->life;
 	}
 	*philo->state = DEAD;
-	printf("║%11ld ║%11ld ║\033[0;31m%-18s\033[0m║▒\n",
+	printf("║%11ld ║%11ld ║   \033[0;31m%-15s\033[0m║▒\n",
 		gettime() - philo->time, philo->id, " is DEAD!");
 	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: stissera <stissera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/02 21:31:11 by stissera          #+#    #+#             */
-/*   Updated: 2022/05/14 19:16:05 by stissera         ###   ########.fr       */
+/*   Updated: 2022/05/15 12:21:03 by stissera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ int	create_philo(t_config *config, t_master *master)
 		else
 			philof = push_first_philo(philo, master);
 		master->last = philo;
-		philo = 0; // Maybe can remove...
 	}
 	return (i);
 }

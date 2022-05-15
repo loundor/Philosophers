@@ -6,7 +6,7 @@
 /*   By: stissera <stissera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/05 14:36:32 by stissera          #+#    #+#             */
-/*   Updated: 2022/05/14 20:04:42 by stissera         ###   ########.fr       */
+/*   Updated: 2022/05/15 12:19:03 by stissera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,25 @@
 
 void	eating(t_philo *philo)
 {
+	if (*philo->state == DEAD)
+		return ;
 	pthread_mutex_lock(&philo->fork);
+	printf("║%11ld ║%11ld ║ %-19s║▒\n", gettime() - philo->time, philo->id,
+		"🥢");
+	if (*philo->state == DEAD)
+	{
+		pthread_mutex_unlock(&philo->fork);
+		return ;
+	}
 	pthread_mutex_lock(&philo->left->fork);
 	if (*philo->state != DEAD)
 	{
-		philo->life = gettime();
-		printf("║%11ld ║%11ld ║ %-19s║▒%d\n", gettime() - philo->time, philo->id,
-			"🥢", philo->eated + 1);
+		printf("║%11ld ║%11ld ║ %-19s║▒\n", gettime() - philo->time, philo->id,
+			"🥢");
 		printf("║%11ld ║%11ld ║  %-18s║▒\n", gettime() - philo->time, philo->id,
 			"🥣");
 		usleep(philo->config->time_to_eat);
+		philo->life = gettime();
 		philo->eated++;
 	}
 	pthread_mutex_unlock(&philo->fork);

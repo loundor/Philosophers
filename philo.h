@@ -6,7 +6,7 @@
 /*   By: stissera <stissera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/29 13:28:24 by stissera          #+#    #+#             */
-/*   Updated: 2022/05/14 18:58:05 by stissera         ###   ########.fr       */
+/*   Updated: 2022/05/15 11:20:15 by stissera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ typedef struct s_needeat
 
 // Parsse and take the arguments
 void		arg_take(t_config *config, int argc, char **argv);//
+void		bad_arg(void);
 
 // Philosophers structure
 int			create_philo(t_config *config, t_master *master);//

@@ -6,7 +6,7 @@
 /*   By: stissera <stissera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/02 21:31:11 by stissera          #+#    #+#             */
-/*   Updated: 2022/05/25 15:31:11 by stissera         ###   ########.fr       */
+/*   Updated: 2022/05/16 19:03:36 by stissera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,11 @@ int	create_philo(t_config *config, t_master *master)
 		if (!philo)
 			return (0);
 		philo->id = i;
+		philo->pid = fork();
 		philo->eated = 0;
-		philo->master = master;
-		philo->state = &master->dead;
+		philo->time = gettime();
 		philo->config = config;
-		if (pthread_mutex_init(&philo->fork, NULL))
-			return (0);
+		philo->life = gettime();
 		if (i > 1)
 			push_next_philo(philo, philof, master);
 		else
@@ -71,6 +70,7 @@ void	free_philo(t_config *config, t_master *master)
 		free(bak);
 		i--;
 	}
+	sem_close(master->sema);
 	master->first = NULL;
 	master->last = NULL;
 }

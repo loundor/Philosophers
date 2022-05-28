@@ -6,7 +6,7 @@
 /*   By: stissera <stissera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/29 13:28:24 by stissera          #+#    #+#             */
-/*   Updated: 2022/05/26 10:55:17 by stissera         ###   ########.fr       */
+/*   Updated: 2022/05/26 11:54:57 by stissera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,14 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <pthread.h>
+# include <fcntl.h>
 # include <sys/time.h>
+# include <semaphore.h>
 # define THINK 0
 # define EAT 1
 # define SLEEP 2
 # define DEAD 3
+
 
 typedef struct s_config
 {
@@ -29,21 +32,20 @@ typedef struct s_config
 	long			time_to_eat;
 	long			time_to_sleep;
 	long			nbr_philo_must_eat;
-	long			start;
-	pthread_mutex_t	writing;
-	struct s_philo	*philosophers;
 }	t_config;
 
 typedef struct s_philo
 {
 	size_t			id;
-	pthread_t		action;
 	t_config		*config;
-	int				*state;
+	pid_t			pid;
 	int				status;
+	int				state;
+	long			life;
 	int				eated;
-	pthread_mutex_t	lfork;
-	pthread_mutex_t	*rfork;
+	struct s_philo	*left;
+	struct s_philo	*right;
+	struct s_master	*master;
 	long			time;
 }	t_philo;
 
@@ -54,7 +56,7 @@ typedef struct s_master
 	t_config		*config;
 	long			start;
 	int				finish;
-	int				dead;
+	sem_t			*sema;
 }	t_master;
 
 // Parsse and take the arguments

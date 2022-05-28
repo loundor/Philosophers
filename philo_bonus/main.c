@@ -6,7 +6,7 @@
 /*   By: stissera <stissera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/29 13:38:14 by stissera          #+#    #+#             */
-/*   Updated: 2022/05/23 21:50:46 by stissera         ###   ########.fr       */
+/*   Updated: 2022/05/21 11:01:17 by stissera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,12 @@ int	main(int argc, char **argv)
 	}
 	master.config = &config;
 	master.finish = 0;
-	master.dead = THINK;
+	master.sema = sem_open("forks", O_CREAT, 0600,
+			config.number_of_philosophers);
+	setting = 1;
+	while (setting <= config.number_of_philosophers)
+		master.first->pid = fork();
+	
 	routine(&master);
 	free_philo(&config, &master);
 	return (0);
@@ -41,6 +46,8 @@ void	routine(t_master *master)
 	size_t		i;
 	t_config	*config;
 
+	master->start = gettime();
+	pthread_create(&monitoring, NULL, &monitor, master);
 	print_header();
 	i = 0;
 	while (++i <= master->config->number_of_philosophers)
@@ -48,8 +55,6 @@ void	routine(t_master *master)
 		pthread_create(&master->first->action, NULL, &launch, master->first);
 		master->first = master->first->right;
 	}
-	master->start = gettime();
-	pthread_create(&monitoring, NULL, &monitor, master);
 	i = 0;
 	while (++i <= master->config->number_of_philosophers)
 	{
@@ -66,11 +71,9 @@ void	*launch(void *user)
 	t_philo		*philo;
 
 	philo = (t_philo *)user;
-	philo->time = gettime();
-	philo->life = gettime();
 	philo->status = THINK;
 	while ((philo->eated < philo->config->nbr_philo_must_eat
-			|| philo->config->nbr_philo_must_eat < 0)
+			|| philo->config->nbr_philo_must_eat == -1)
 		&& *philo->state != DEAD)
 	{
 		if (philo->left->status != EAT)
@@ -78,8 +81,7 @@ void	*launch(void *user)
 			philo->status = EAT;
 			eating(philo);
 			sleeping(philo);
-			//thinking(philo);
-			//printf("ID: %lu - Time: %ld\n", philo->id, philo->life);
+			thinking(philo);
 		}
 	}
 	if (*philo->state == DEAD)

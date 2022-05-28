@@ -6,7 +6,7 @@
 /*   By: stissera <stissera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/30 11:54:15 by stissera          #+#    #+#             */
-/*   Updated: 2022/05/25 15:31:14 by stissera         ###   ########.fr       */
+/*   Updated: 2022/05/28 10:46:13 by stissera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,25 +55,23 @@ int	ft_isdigit(char *nbr)
 
 void	*monitor(void *s)
 {
-	t_master	*master;
 	t_philo		*philo;
 	long		time;
 
-	master = (t_master *) s;
-	philo = master->first;
-	//time = gettime() - master->first->life;
-	while ((gettime() - master->first->life) <= master->config->time_to_die
-		&& master->dead != DEAD)
+	philo = (t_philo *) s;
+	while (!philo->config->end)
 	{
-		if (master->config->number_of_philosophers == master->finish)
+		pthread_mutex_lock(&philo->config->monitoring);
+		time = gettime();
+		if (philo->need_eat == 0)
 			return (NULL);
-		philo = philo->left;
-		//printf("IDD: %lu - Time: %ld\n", philo->id, philo->life);
-		//time = gettime() - philo->life;
+		if (time - philo->time >= philo->config->time_to_die
+			&& philo->config->end == 0)
+		{
+			print_status(philo->id, philo, DEAD_MSG);
+			philo->config->end = DEAD;
+		}
+		pthread_mutex_unlock(&philo->config->monitoring);
 	}
-	*philo->state = DEAD;
-//	pthread_mutex_lock(&philo->fork);
-	printf("║%11ld ║%11ld ║   \033[0;31m%-15s\033[0m║▒\n",
-		gettime() - philo->time, philo->id, " is DEAD!");
 	return (NULL);
 }

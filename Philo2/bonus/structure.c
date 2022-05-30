@@ -6,7 +6,7 @@
 /*   By: stissera <stissera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/02 21:31:11 by stissera          #+#    #+#             */
-/*   Updated: 2022/05/30 22:05:28 by stissera         ###   ########.fr       */
+/*   Updated: 2022/05/31 00:22:33 by stissera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,11 @@ int	create_philo(t_config *config)
 		return (msg_error(MALLOC_ERR));
 	i = -1;
 	sem_unlink("semaphore");
-	pthread_mutex_init(&config->writing, NULL);
-	pthread_mutex_init(&config->monitoring, NULL);
+	sem_unlink("wrinting");
 	config->sema = sem_open("semaphore", O_CREAT | O_EXCL,
 			0600, config->number_of_philosophers);
+	config->writing = sem_open("wrinting", O_CREAT | O_EXCL,
+			0600, 1);
 	config->end = 0;
 	while (++i < config->number_of_philosophers)
 	{
@@ -39,7 +40,9 @@ int	create_philo(t_config *config)
 void	free_philo(t_config *config)
 {
 	sem_unlink("semaphore");
+	sem_unlink("wrinting");
 	sem_close(config->sema);
+	sem_close(config->writing);
 	free(config->philosophers);
 	config->philosophers = NULL;
 }

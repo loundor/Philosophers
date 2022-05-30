@@ -6,7 +6,7 @@
 /*   By: stissera <stissera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/29 13:28:24 by stissera          #+#    #+#             */
-/*   Updated: 2022/05/30 22:07:15 by stissera         ###   ########.fr       */
+/*   Updated: 2022/05/31 00:22:37 by stissera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,7 @@ typedef struct s_config
 	sem_t			*sema;
 	long			start;
 	int				end;
-	pthread_mutex_t	writing;
-	pthread_mutex_t	monitoring;
+	sem_t			*writing;
 	struct s_philo	*philosophers;
 }	t_config;
 
@@ -77,10 +76,10 @@ long	gettime(void);
 // Start simulation
 int		routine(t_config *master);
 void	*launch(void *user);
-void	takefork(t_philo *philo);
-void	eating(t_philo *philo);
-void	sleeping(t_philo *philo);
-void	thinking(t_philo *philo);
+int		takefork(t_philo *philo);
+int		eating(t_philo *philo);
+int		sleeping(t_philo *philo);
+int		thinking(t_philo *philo);
 
 int		msg_error(char *msg);
 void	*monitor(void *master);

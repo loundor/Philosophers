@@ -6,7 +6,7 @@
 /*   By: stissera <stissera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/30 11:54:15 by stissera          #+#    #+#             */
-/*   Updated: 2022/05/30 22:39:29 by stissera         ###   ########.fr       */
+/*   Updated: 2022/05/31 00:23:53 by stissera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,17 +61,15 @@ void	*monitor(void *s)
 	philo = (t_philo *) s;
 	while (!philo->config->end)
 	{
-		pthread_mutex_lock(&philo->config->monitoring);
 		time = gettime();
-		if (philo->need_eat == 0)
+		if (!philo->need_eat)
 			return (NULL);
 		if (time - philo->time >= philo->config->time_to_die
-			&& philo->config->end == 0)
+			&& !philo->config->end)
 		{
 			print_status(philo->id, philo, DEAD_MSG);
 			philo->config->end = DEAD;
 		}
-		pthread_mutex_unlock(&philo->config->monitoring);
 	}
 	return (NULL);
 }

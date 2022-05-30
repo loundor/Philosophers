@@ -6,7 +6,7 @@
 /*   By: stissera <stissera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/29 13:38:14 by stissera          #+#    #+#             */
-/*   Updated: 2022/05/30 22:22:25 by stissera         ###   ########.fr       */
+/*   Updated: 2022/05/31 00:22:35 by stissera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,9 @@ void	*launch(void *user)
 		usleep (philo->config->time_to_eat * 10);
 	while (philo->need_eat != 0 && philo->config->end == 0)
 	{
-		takefork(philo);
-		eating(philo);
-		sleeping(philo);
-		thinking(philo);
+		if (takefork(philo) || eating(philo)
+			|| sleeping(philo) || thinking(philo))
+			exit (0);
 	}
 	finish(philo);
 	exit (0);

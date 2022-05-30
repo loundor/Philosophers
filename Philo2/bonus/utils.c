@@ -6,7 +6,7 @@
 /*   By: stissera <stissera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/30 11:54:15 by stissera          #+#    #+#             */
-/*   Updated: 2022/05/30 22:26:34 by stissera         ###   ########.fr       */
+/*   Updated: 2022/05/30 22:39:29 by stissera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ void	*monitor(void *s)
 			print_status(philo->id, philo, DEAD_MSG);
 			philo->config->end = DEAD;
 		}
+		pthread_mutex_unlock(&philo->config->monitoring);
 	}
 	return (NULL);
 }

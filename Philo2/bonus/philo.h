@@ -6,7 +6,7 @@
 /*   By: stissera <stissera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/29 13:28:24 by stissera          #+#    #+#             */
-/*   Updated: 2022/05/31 00:22:37 by stissera         ###   ########.fr       */
+/*   Updated: 2022/06/04 22:06:37 by stissera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <sys/fcntl.h>
 # include <sys/time.h>
 # include <sys/wait.h>
+# include <signal.h>
 # define DEAD 1
 
 // Messages
@@ -72,10 +73,11 @@ void	free_philo(t_config *config);
 int		ft_atoi(char *nbr);
 int		ft_isdigit(char *nbr);
 long	gettime(void);
+int		is_dead(int dead);
 
 // Start simulation
 int		routine(t_config *master);
-void	*launch(void *user);
+int		launch(t_philo *philo);
 int		takefork(t_philo *philo);
 int		eating(t_philo *philo);
 int		sleeping(t_philo *philo);

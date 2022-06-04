@@ -6,7 +6,7 @@
 /*   By: stissera <stissera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/29 13:38:14 by stissera          #+#    #+#             */
-/*   Updated: 2022/05/31 00:22:35 by stissera         ###   ########.fr       */
+/*   Updated: 2022/06/04 22:11:10 by stissera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ int	main(int argc, char **argv)
 	if (!create_philo(&config))
 		return (0);
 	routine(&config);
+	print_bottom(&config);
 	free_philo(&config);
 	return (0);
 }
@@ -29,6 +30,7 @@ int	routine(t_config *master)
 {
 	pthread_t	philo;
 	size_t		i;
+	int			good;
 
 	i = 0;
 	print_header(master);
@@ -36,7 +38,7 @@ int	routine(t_config *master)
 	while (i <= master->number_of_philosophers)
 	{
 		master->philosophers[i].id_pid = fork();
-		master->philosophers[i].start_at = gettime();
+		master->philosophers[i].start_at = master->start;
 		master->philosophers[i].time = master->philosophers[i].start_at;
 		if (master->philosophers[i].id_pid == 0)
 			launch(&master->philosophers[i]);
@@ -47,26 +49,25 @@ int	routine(t_config *master)
 	i = -1;
 	while (++i <= master->number_of_philosophers)
 		waitpid(master->philosophers[i].id_pid, NULL, 0);
-	print_bottom(master);
+	sem_post(master->writing);
 	return (0);
 }
 
-void	*launch(void *user)
+int	launch(t_philo *philo)
 {
-	t_philo		*philo;
 	pthread_t	monitoring;
 
-	philo = (t_philo *)user;
-	pthread_create(&monitoring, NULL, &monitor, user);
-	pthread_detach(monitoring);
 	if (philo->id % 2 == 0)
 		usleep (philo->config->time_to_eat * 10);
-	while (philo->need_eat != 0 && philo->config->end == 0)
+	pthread_create(&monitoring, NULL, monitor, philo);
+	pthread_detach(monitoring);
+	while (philo->need_eat && is_dead((int)philo->config->end))
 	{
 		if (takefork(philo) || eating(philo)
 			|| sleeping(philo) || thinking(philo))
-			exit (0);
+			break ;
 	}
-	finish(philo);
-	exit (0);
+	if (!philo->need_eat)
+		finish(philo);
+	return (0);
 }

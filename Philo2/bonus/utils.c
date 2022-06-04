@@ -6,7 +6,7 @@
 /*   By: stissera <stissera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/30 11:54:15 by stissera          #+#    #+#             */
-/*   Updated: 2022/05/31 00:23:53 by stissera         ###   ########.fr       */
+/*   Updated: 2022/06/04 22:06:06 by stissera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,13 +59,13 @@ void	*monitor(void *s)
 	long		time;
 
 	philo = (t_philo *) s;
-	while (!philo->config->end)
+	while (philo->need_eat)
 	{
 		time = gettime();
 		if (!philo->need_eat)
 			return (NULL);
 		if (time - philo->time >= philo->config->time_to_die
-			&& !philo->config->end)
+			&& is_dead(philo->config->end))
 		{
 			print_status(philo->id, philo, DEAD_MSG);
 			philo->config->end = DEAD;

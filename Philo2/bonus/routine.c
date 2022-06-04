@@ -6,7 +6,7 @@
 /*   By: stissera <stissera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 00:56:12 by stissera          #+#    #+#             */
-/*   Updated: 2022/05/28 00:50:00 by stissera         ###   ########.fr       */
+/*   Updated: 2022/06/04 22:05:27 by stissera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,4 +21,11 @@ long	gettime(void)
 	ret = ((starttime.tv_sec * 1000)
 			+ (starttime.tv_usec / 1000));
 	return (ret);
+}
+
+int	is_dead(int dead)
+{
+	if (dead)
+		exit (0);
+	return (1);
 }

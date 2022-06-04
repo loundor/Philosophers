@@ -6,7 +6,7 @@
 /*   By: stissera <stissera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 15:22:37 by stissera          #+#    #+#             */
-/*   Updated: 2022/05/31 00:19:00 by stissera         ###   ########.fr       */
+/*   Updated: 2022/06/04 22:05:58 by stissera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,11 @@ int	msg_error(char *msg)
 
 void	print_status(int id, t_philo *philo, char *status)
 {
+	is_dead(philo->config->end);
 	sem_wait(philo->config->writing);
-	if (philo->config->end == 0)
-		printf("║%11ld ║%11ld ║ %-19s║▒\n", gettime() - philo->config->start,
-			philo->id + 1, status);
+	if (!philo->config->end)
+		printf("║%11ld ║%11ld ║ %-19s║▒ %ld\n", gettime() - philo->config->start,
+			philo->id + 1, status, philo->config->writing->__align);
 	sem_post(philo->config->writing);
 }
 
@@ -53,5 +54,6 @@ void	finish(t_philo *philo)
 		printf("\033[0;32m       %4ld \033[0m║", philo->id + 1);
 		printf("\033[0;32m         👌       \033[0m║▒\n");
 		sem_post(philo->config->writing);
+		exit (0);
 	}
 }

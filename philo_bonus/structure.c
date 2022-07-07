@@ -6,7 +6,7 @@
 /*   By: stissera <stissera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/02 21:31:11 by stissera          #+#    #+#             */
-/*   Updated: 2022/07/07 17:53:38 by stissera         ###   ########.fr       */
+/*   Updated: 2022/07/07 21:09:37 by stissera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	create_philo(t_config *config)
 
 void	free_philo(t_config *config)
 {
-//	sem_close(config->sema);
+	sem_close(config->sema);
 	sem_close(config->writing);
 	sem_close(config->deadphilo);
 	sem_unlink("writing");

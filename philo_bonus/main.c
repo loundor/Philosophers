@@ -6,7 +6,7 @@
 /*   By: stissera <stissera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/29 13:38:14 by stissera          #+#    #+#             */
-/*   Updated: 2022/07/07 17:55:07 by stissera         ###   ########.fr       */
+/*   Updated: 2022/07/07 21:04:29 by stissera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,5 +72,5 @@ int	launch(t_philo *philo)
 	}
 	if (!philo->need_eat)
 		finish(philo);
-	return (0);
+	exit (0);
 }

@@ -1,20 +1,19 @@
-NAME		=	philo
-NAMEB		=	philo_bonus
+NAME		=	./philo/philo
+NAMEB		=	./philo_bonus/philo_bonus
 CC			=	gcc
 FLAGS		=	-Wall -Werror -Wextra $(EXTRAF)
 EXTRAF		=	-g -pthread
-INCLUDES	=	-I./
+INCLUDES	=	-I./philo
 INCLUDESB	=	-I./philo_bonus/
-SRCS		=	structure.c \
+SRCS		=	main.c\
+				structure.c \
 				msg.c \
 				parssing.c \
 				routine.c \
 				state.c \
 				utils.c
-SRCN		=	${SRCS} main.c
-SRCB		=	${SRCS} main_bonus.c
-OBJS		=	$(addprefix ./, ${SRCN:.c=.o})
-OBJSB		=	$(addprefix ./philo_bonus/, ${SRCB:.c=.o})
+OBJS		=	$(addprefix ./philo/, ${SRCS:.c=.o})
+OBJSB		=	$(addprefix ./philo_bonus/, ${SRCS:.c=.o})
 RM			=	@rm -rf
 
 $(NAME)		:	${OBJS}
@@ -23,15 +22,16 @@ $(NAME)		:	${OBJS}
 $(NAMEB)	:	${OBJSB}
 				${CC} ${FLAGS} ${INCLUDESB} ${OBJSB} -o $@
 
-all			:	${NAME}
+all			:	${NAME} ${NAMEB}
 
 clean		:
-				${RM} ${OBJS} ${OBJSB}
+				${RM} ${OBJSB}
+				${RM} ${OBJS}
 
 fclean		:	clean
+				${RM} ${NAMEB}
 				${RM} ${NAME}
-# WARNING!! remove the folder!!
-# @${RM} ${NAMEB}
+				
 
 re			:	fclean all
 

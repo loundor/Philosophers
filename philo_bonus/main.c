@@ -6,7 +6,7 @@
 /*   By: stissera <stissera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/29 13:38:14 by stissera          #+#    #+#             */
-/*   Updated: 2022/07/07 21:04:29 by stissera         ###   ########.fr       */
+/*   Updated: 2022/07/07 22:45:41 by stissera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ int	routine(t_config *master)
 	i = 0;
 	while (i++ < master->number_of_philosophers)
 		sem_wait(master->deadphilo);
-	//sem_post(master->writing);
 	return (0);
 }
 

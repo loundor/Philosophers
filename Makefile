@@ -18,11 +18,9 @@ RM			=	@rm -rf
 
 $(NAME)		:	${OBJS}
 				${CC} ${FLAGS} ${INCLUDES} ${OBJS} -o $@
-				@cp ${NAME} ./
 
 $(NAMEB)	:	${OBJSB}
 				${CC} ${FLAGS} ${INCLUDESB} ${OBJSB} -o $@
-				@cp ${NAMEB} ./
 
 all			:	${NAME} ${NAMEB}
 

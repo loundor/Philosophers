@@ -6,7 +6,7 @@
 /*   By: stissera <stissera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/29 13:38:14 by stissera          #+#    #+#             */
-/*   Updated: 2022/06/04 22:11:10 by stissera         ###   ########.fr       */
+/*   Updated: 2022/07/07 13:09:18 by stissera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,9 @@ int	routine(t_config *master)
 			return (msg_error(FORK_ERR));
 		i++;
 	}
-	i = -1;
-	while (++i <= master->number_of_philosophers)
-		waitpid(master->philosophers[i].id_pid, NULL, 0);
+	i = 0;
+	while (i++ < master->number_of_philosophers)
+		sem_wait(master->deadphilo);
 	sem_post(master->writing);
 	return (0);
 }
@@ -57,6 +57,7 @@ int	launch(t_philo *philo)
 {
 	pthread_t	monitoring;
 
+	sem_wait(philo->config->deadphilo);
 	if (philo->id % 2 == 0)
 		usleep (philo->config->time_to_eat * 10);
 	pthread_create(&monitoring, NULL, monitor, philo);

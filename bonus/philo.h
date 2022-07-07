@@ -6,7 +6,7 @@
 /*   By: stissera <stissera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/29 13:28:24 by stissera          #+#    #+#             */
-/*   Updated: 2022/06/18 17:09:50 by stissera         ###   ########.fr       */
+/*   Updated: 2022/07/07 10:38:23 by stissera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ typedef struct s_config
 	long			time_to_sleep;
 	long			nbr_philo_must_eat;
 	sem_t			*sema;
+	sem_t			*deadphilo;
 	long			start;
 	int				end;
 	sem_t			*writing;

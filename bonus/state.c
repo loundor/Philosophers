@@ -6,53 +6,53 @@
 /*   By: stissera <stissera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/05 14:36:32 by stissera          #+#    #+#             */
-/*   Updated: 2022/05/28 10:46:09 by stissera         ###   ########.fr       */
+/*   Updated: 2022/07/07 13:00:47 by stissera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./philo.h"
 
-void	takefork(t_philo *philo)
+int	takefork(t_philo *philo)
 {
-	pthread_mutex_lock(philo->rfork);
-	print_status(philo->id, philo, FORK_MSG);
-	if (philo->config->number_of_philosophers > 1)
+	int	sem;
+
+	sem = 0;
+	while (sem++ < 2)
 	{
-		pthread_mutex_lock(&philo->lfork);
-		if (philo->config->end == 0)
-			print_status(philo->id, philo, FORK_MSG);
+		sem_wait(philo->config->sema);
+		print_status(philo->id, philo, FORK_MSG);
 	}
-	else
-		usleep(philo->config->time_to_die * 1001);
+	return (0);
 }
 
-void	eating(t_philo *philo)
+int	eating(t_philo *philo)
 {
+	int	sem;
+
 	philo->time = gettime();
-	if (philo->need_eat != 0)
+	if (philo->need_eat && is_dead(philo->config->end))
 	{
 		print_status(philo->id, philo, EAT_MSG);
 		usleep(philo->config->time_to_eat * 1000);
 		philo->need_eat--;
 	}
-	pthread_mutex_unlock(&philo->lfork);
-	pthread_mutex_unlock(philo->rfork);
+	sem = 0;
+	while (sem++ < 2)
+		sem_post(philo->config->sema);
+	return (0);
 }
 
-void	sleeping(t_philo *philo)
+int	sleeping(t_philo *philo)
 {
-	if (philo->need_eat != 0)
-	{
+	if (philo->need_eat && is_dead(philo->config->end))
 		print_status(philo->id, philo, SLEEP_MSG);
-		usleep(philo->config->time_to_sleep * 1000);
-	}
+	usleep(philo->config->time_to_sleep * 1000);
+	return (0);
 }
 
-void	thinking(t_philo *philo)
+int	thinking(t_philo *philo)
 {
-	if (philo->need_eat != 0)
-	{
+	if (philo->need_eat && is_dead(philo->config->end))
 		print_status(philo->id, philo, THINK_MSG);
-	}
+	return (0);
 }
-

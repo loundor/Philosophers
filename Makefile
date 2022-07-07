@@ -6,6 +6,7 @@ EXTRAF		=	-g -pthread
 INCLUDES	=	-I./
 INCLUDESB	=	-I./philo_bonus/
 SRCS		=	structure.c \
+				msg.c \
 				parssing.c \
 				routine.c \
 				state.c \

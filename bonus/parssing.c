@@ -6,7 +6,7 @@
 /*   By: stissera <stissera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/02 21:33:59 by stissera          #+#    #+#             */
-/*   Updated: 2022/05/28 10:46:10 by stissera         ###   ########.fr       */
+/*   Updated: 2022/07/07 10:29:11 by stissera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ int	arg_take(t_config *config, int argc, char **argv)
 		|| config->time_to_eat < 1
 		|| config->time_to_sleep < 1)
 		return (bad_arg(argv[0]));
+	return (1);
 }
 
 int	bad_arg(char *arg)

@@ -6,71 +6,46 @@
 /*   By: stissera <stissera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/02 21:31:11 by stissera          #+#    #+#             */
-/*   Updated: 2022/05/25 15:31:11 by stissera         ###   ########.fr       */
+/*   Updated: 2022/05/28 10:43:30 by stissera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./philo.h"
 
-void	push_next_philo(t_philo *philo, t_philo *philof, t_master *master)
+int	create_philo(t_config *config)
 {
-	philo->right = master->last;
-	philo->left = master->first;
-	master->last->left = philo;
-	philof->right = philo;
-}
-
-t_philo	*push_first_philo(t_philo *philo, t_master *master)
-{
-	philo->right = philo;
-	philo->left = philo;
-	master->first = philo;
-	return (philo);
-}
-
-int	create_philo(t_config *config, t_master *master)
-{
-	t_philo	*philo;
-	t_philo	*philof;
 	int		i;
 
-	i = 0;
-	while (++i <= config->number_of_philosophers)
+	config->philosophers = malloc(sizeof(t_philo)
+			* config->number_of_philosophers);
+	if (!config->philosophers)
+		return (msg_error(MALLOC_ERR));
+	i = -1;
+	pthread_mutex_init(&config->writing, NULL);
+	pthread_mutex_init(&config->monitoring, NULL);
+	config->end = 0;
+	while (++i < config->number_of_philosophers)
 	{
-		philo = malloc(sizeof(t_philo));
-		if (!philo)
+		config->philosophers[i].id = i;
+		config->philosophers[i].need_eat = config->nbr_philo_must_eat;
+		config->philosophers[i].config = config;
+		if (pthread_mutex_init(&config->philosophers[i].lfork, NULL))
 			return (0);
-		philo->id = i;
-		philo->eated = 0;
-		philo->master = master;
-		philo->state = &master->dead;
-		philo->config = config;
-		if (pthread_mutex_init(&philo->fork, NULL))
-			return (0);
-		if (i > 1)
-			push_next_philo(philo, philof, master);
-		else
-			philof = push_first_philo(philo, master);
-		master->last = philo;
+		if (i > 0)
+			config->philosophers[i].rfork = &config->philosophers[i - 1].lfork;
 	}
+	config->philosophers[0].rfork = \
+				&config->philosophers[config->number_of_philosophers - 1].lfork;
 	return (i);
 }
 
-void	free_philo(t_config *config, t_master *master)
+void	free_philo(t_config *config)
 {
-	t_philo	*bak;
 	int		i;
 
 	i = config->number_of_philosophers;
-	while (i > 0)
-	{
-		bak = master->last;
-		pthread_mutex_destroy(&master->last->fork);
-		if (i != 0)
-			master->last = master->last->right;
-		free(bak);
-		i--;
-	}
-	master->first = NULL;
-	master->last = NULL;
+	while (--i > 0)
+		pthread_mutex_destroy(&config->philosophers[i].lfork);
+	free(config->philosophers);
+	config->philosophers = NULL;
 }

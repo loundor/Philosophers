@@ -6,7 +6,7 @@
 /*   By: stissera <stissera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 00:56:12 by stissera          #+#    #+#             */
-/*   Updated: 2022/05/14 18:57:57 by stissera         ###   ########.fr       */
+/*   Updated: 2022/05/28 00:50:00 by stissera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ long	gettime(void)
 	long			ret;
 
 	gettimeofday(&starttime, NULL);
-	ret = ((starttime.tv_sec * 10000)
+	ret = ((starttime.tv_sec * 1000)
 			+ (starttime.tv_usec / 1000));
 	return (ret);
 }

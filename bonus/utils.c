@@ -6,7 +6,7 @@
 /*   By: stissera <stissera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/30 11:54:15 by stissera          #+#    #+#             */
-/*   Updated: 2022/05/14 20:02:31 by stissera         ###   ########.fr       */
+/*   Updated: 2022/07/07 13:05:10 by stissera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,23 +55,25 @@ int	ft_isdigit(char *nbr)
 
 void	*monitor(void *s)
 {
-	t_master	*master;
 	t_philo		*philo;
 	long		time;
+	int			i;
 
-	master = (t_master *) s;
-	philo = master->first;
-	time = gettime() - master->first->life;
-	while (time < master->config->time_to_die
-		&& master->dead != DEAD)
+	philo = (t_philo *) s;
+	while (philo->need_eat)
 	{
-		if (master->config->number_of_philosophers == master->finish)
+		time = gettime();
+		if (!philo->need_eat)
 			return (NULL);
-		philo = philo->left;
-		time = gettime() - philo->life;
+		if (time - philo->time >= philo->config->time_to_die
+			&& is_dead(philo->config->end))
+		{
+			print_status(philo->id, philo, DEAD_MSG);
+			philo->config->end = DEAD;
+			i = 0;
+			while (i++ < philo->config->number_of_philosophers)
+				sem_post(philo->config->deadphilo);
+		}
 	}
-	*philo->state = DEAD;
-	printf("║%11ld ║%11ld ║   \033[0;31m%-15s\033[0m║▒\n",
-		gettime() - philo->time, philo->id, " is DEAD!");
 	return (NULL);
 }

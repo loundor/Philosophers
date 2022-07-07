@@ -6,7 +6,7 @@
 /*   By: stissera <stissera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/29 13:28:24 by stissera          #+#    #+#             */
-/*   Updated: 2022/07/07 10:38:23 by stissera         ###   ########.fr       */
+/*   Updated: 2022/07/07 17:44:57 by stissera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ int		bad_arg(char *arg);
 // Philosophers structure
 int		create_philo(t_config *config);
 void	free_philo(t_config *config);
+void	kill_philo(t_config *config);
 
 // Utils
 int		ft_atoi(char *nbr);

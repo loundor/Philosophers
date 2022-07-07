@@ -6,7 +6,7 @@
 /*   By: stissera <stissera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/29 13:38:14 by stissera          #+#    #+#             */
-/*   Updated: 2022/07/07 13:09:18 by stissera         ###   ########.fr       */
+/*   Updated: 2022/07/07 17:55:07 by stissera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,11 @@ int	main(int argc, char **argv)
 	if (!create_philo(&config))
 		return (0);
 	routine(&config);
+	kill_philo(&config);
+	sem_post(config.writing);
 	print_bottom(&config);
 	free_philo(&config);
-	return (0);
+	exit (0);
 }
 
 int	routine(t_config *master)
@@ -49,7 +51,7 @@ int	routine(t_config *master)
 	i = 0;
 	while (i++ < master->number_of_philosophers)
 		sem_wait(master->deadphilo);
-	sem_post(master->writing);
+	//sem_post(master->writing);
 	return (0);
 }
 

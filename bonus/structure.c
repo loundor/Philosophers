@@ -6,7 +6,7 @@
 /*   By: stissera <stissera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/02 21:31:11 by stissera          #+#    #+#             */
-/*   Updated: 2022/07/07 13:00:17 by stissera         ###   ########.fr       */
+/*   Updated: 2022/07/07 17:53:38 by stissera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,20 +42,24 @@ int	create_philo(t_config *config)
 
 void	free_philo(t_config *config)
 {
-	size_t	i;
-
-	i = -1;
+//	sem_close(config->sema);
+	sem_close(config->writing);
+	sem_close(config->deadphilo);
 	sem_unlink("writing");
 	sem_unlink("semaphore");
 	sem_unlink("deadphilo");
+	free(config->philosophers);
+	config->philosophers = NULL;
+}
+
+void	kill_philo(t_config *config)
+{
+	size_t	i;
+
+	i = -1;
 	while (++i < config->number_of_philosophers)
 	{
 		if (config->philosophers[i].id_pid)
-			kill(config->philosophers[i].id_pid, 9);
+			kill(config->philosophers[i].id_pid, 15);
 	}
-	sem_close(config->sema);
-	sem_close(config->writing);
-	sem_close(config->deadphilo);
-	free(config->philosophers);
-	config->philosophers = NULL;
 }

@@ -6,7 +6,7 @@
 /*   By: stissera <stissera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/30 11:54:15 by stissera          #+#    #+#             */
-/*   Updated: 2022/07/07 13:05:10 by stissera         ###   ########.fr       */
+/*   Updated: 2022/07/07 17:45:29 by stissera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,10 @@ void	*monitor(void *s)
 			print_status(philo->id, philo, DEAD_MSG);
 			philo->config->end = DEAD;
 			i = 0;
+			sem_wait(philo->config->writing);
 			while (i++ < philo->config->number_of_philosophers)
 				sem_post(philo->config->deadphilo);
+			exit (0);
 		}
 	}
 	return (NULL);

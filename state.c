@@ -6,7 +6,7 @@
 /*   By: stissera <stissera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/05 14:36:32 by stissera          #+#    #+#             */
-/*   Updated: 2022/05/28 10:46:09 by stissera         ###   ########.fr       */
+/*   Updated: 2022/07/07 17:55:59 by stissera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,4 +55,3 @@ void	thinking(t_philo *philo)
 		print_status(philo->id, philo, THINK_MSG);
 	}
 }
-

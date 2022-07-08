@@ -6,7 +6,7 @@
 /*   By: stissera <stissera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/29 13:38:14 by stissera          #+#    #+#             */
-/*   Updated: 2022/07/07 22:45:41 by stissera         ###   ########.fr       */
+/*   Updated: 2022/07/08 11:07:44 by stissera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ int	main(int argc, char **argv)
 		return (0);
 	routine(&config);
 	kill_philo(&config);
-	sem_post(config.writing);
 	print_bottom(&config);
 	free_philo(&config);
 	exit (0);

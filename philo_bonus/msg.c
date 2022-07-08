@@ -6,7 +6,7 @@
 /*   By: stissera <stissera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 15:22:37 by stissera          #+#    #+#             */
-/*   Updated: 2022/07/07 13:07:26 by stissera         ###   ########.fr       */
+/*   Updated: 2022/07/08 11:08:08 by stissera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,8 @@ void	print_header(t_config *config)
 
 void	print_bottom(t_config *config)
 {
-	sem_wait(config->writing);
 	printf("╚════════════╩════════════╩══════════════════╝▒\n");
 	printf("  ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒\n");
-	sem_post(config->writing);
 }
 
 void	finish(t_philo *philo)
